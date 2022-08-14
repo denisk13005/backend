@@ -2,6 +2,7 @@ const express = require('express');
 
 const app = express();
 
+app.use(express.json()) // équivalent à bodyParser converti le body en json
 //résolution des prblèmes CORS on ajoute des entêtes de config et de permissions 
 app.use((req, res, next) => {
    res.setHeader('Access-Control-Allow-Origin', '*'); // autorise l'accès a l'api à partir de n'importe quelle adresse !
@@ -9,8 +10,13 @@ app.use((req, res, next) => {
    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
    next(); // on n'oublie pas le next 
  });
-
-app.use('/api/stuff', (req, res, next) => {
+app.post('/api/stuff',(req,res,next) => {
+   console.log(req.body);
+   res.status(201).json({
+      message:'Objet créé'
+   })
+})
+app.get('/api/stuff', (req, res, next) => {
    const stuff = [
      {
        _id: 'oeihfzeoi',

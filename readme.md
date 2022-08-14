@@ -154,3 +154,20 @@ En résumé:
     La méthode app.use() vous permet d'attribuer un middleware à une route spécifique de votre application.
     Le CORS définit comment les serveurs et les navigateurs interagissent, en spécifiant quelles ressources peuvent être demandées de manière légitime – par défaut, les requêtes AJAX sont interdites.
     Pour permettre des requêtes cross-origin (et empêcher des erreurs CORS), des headers spécifiques de contrôle d'accès doivent être précisés pour tous vos objets de réponse.
+
+## Création de la route POST
+
+il faut extraire le corps JSON le la requête pour cela on utilise le middleware `app.use(express.json())` équivalent à body parser
+
+ensuite on écrit notre middleware qui traitera la route post
+```
+app.post('/api/stuff', (req, res, next) => {
+  console.log(req.body);
+  res.status(201).json({
+    message: 'Objet créé !'
+  });
+});
+```
+### Questionnaire résumant la première partie 
+
+https://openclassrooms.com/fr/courses/6390246-passez-au-full-stack-avec-node-js-express-et-mongodb/exercises/3690
