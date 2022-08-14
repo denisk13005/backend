@@ -18,6 +18,8 @@ console.log("server start")
 
 ## Serveur avec express (plus pratique et moins long quavec node)
 
+<a>https://openclassrooms.com/fr/courses/6390246-passez-au-full-stack-avec-node-js-express-et-mongodb/6466277-creez-une-application-express#/id/video_Player_3</a>
+
 `npm i express` dans le dossier backend
 
 Création du fichier app.js qui contiendra notre app express 
@@ -46,3 +48,7 @@ server.listen(process.env.PORT || 3000);
 ```
 
 ### Ajout des middlewares 
+
+Une application Express est fondamentalement une série de fonctions appelées middleware. Chaque élément de middleware reçoit les objets request et response , peut les lire, les analyser et les manipuler, le cas échéant. 
+
+<a>https://openclassrooms.com/fr/courses/6390246-passez-au-full-stack-avec-node-js-express-et-mongodb/6466277-creez-une-application-express#/id/video_Player_4</a>
