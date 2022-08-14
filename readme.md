@@ -21,7 +21,7 @@ console.log("server start")
 `npm i express` dans le dossier backend
 
 Création du fichier app.js qui contiendra notre app express 
-`
+```
 const express = require('express');
 
 const app = express();
@@ -31,11 +31,11 @@ app.use((req, res) => {
 });
 
 module.exports = app;
-`
+```
 
 on importe notre appli express dans server.js
 
-`
+```
 const http = require('http');
 const app = require('./app');
 
@@ -43,6 +43,6 @@ app.set('port', process.env.PORT || 3000);
 const server = http.createServer(app);
 
 server.listen(process.env.PORT || 3000);
-`
+```
 
 ### Ajout des middlewares 
