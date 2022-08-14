@@ -2,6 +2,14 @@ const express = require('express');
 
 const app = express();
 
+//résolution des prblèmes CORS on ajoute des entêtes de config et de permissions 
+app.use((req, res, next) => {
+   res.setHeader('Access-Control-Allow-Origin', '*'); // autorise l'accès a l'api à partir de n'importe quelle adresse !
+   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+   next(); // on n'oublie pas le next 
+ });
+
 app.use('/api/stuff', (req, res, next) => {
    const stuff = [
      {

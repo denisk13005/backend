@@ -112,3 +112,45 @@ Aperçu rapide de ce qui se passe ici :
     la fonction errorHandler  recherche les différentes erreurs et les gère de manière appropriée. Elle est ensuite enregistrée dans le serveur ;
 
     un écouteur d'évènements est également enregistré, consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console.
+
+### Ecriture du middleware pour notre première requête GET
+
+On remplace le middleware dans app.js par celui ci : 
+
+```
+app.use('/api/stuff', (req, res, next) => {
+  const stuff = [
+    {
+      _id: 'oeihfzeoi',
+      title: 'Mon premier objet',
+      description: 'Les infos de mon premier objet',
+      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+      price: 4900,
+      userId: 'qsomihvqios',
+    },
+    {
+      _id: 'oeihfzeomoihi',
+      title: 'Mon deuxième objet',
+      description: 'Les infos de mon deuxième objet',
+      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+      price: 2900,
+      userId: 'qsomihvqios',
+    },
+  ];
+  res.status(200).json(stuff);
+});
+```
+
+### Résolution des problèmes des cors
+
+le CORS est une sécurité qui empêche l'accès à l'api si l'adresse front et back n'est pas la mm
+
+pour résoudre ce problème on crée un middleware d'autorisation qui va configurer les entêtes de réponses (voir app.js)
+Ces headers permettent :
+    d'accéder à notre API depuis n'importe quelle origine ( '*' ) ;
+    d'ajouter les headers mentionnés aux requêtes envoyées vers notre API (Origin , X-Requested-With , etc.) ;
+    d'envoyer des requêtes avec les méthodes mentionnées ( GET ,POST , etc.).
+En résumé:
+    La méthode app.use() vous permet d'attribuer un middleware à une route spécifique de votre application.
+    Le CORS définit comment les serveurs et les navigateurs interagissent, en spécifiant quelles ressources peuvent être demandées de manière légitime – par défaut, les requêtes AJAX sont interdites.
+    Pour permettre des requêtes cross-origin (et empêcher des erreurs CORS), des headers spécifiques de contrôle d'accès doivent être précisés pour tous vos objets de réponse.
