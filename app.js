@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose')
-const Thing = require('./models/thing');
+const Thing = require('./models/Thing');
 const app = express();
 
 mongoose.connect(process.env.MONGO_URI || `mongodb+srv://denisk13005:Lucas*2808@cluster0.upft3lg.mongodb.net/?retryWrites=true&w=majority`,
