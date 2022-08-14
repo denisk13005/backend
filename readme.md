@@ -171,3 +171,36 @@ app.post('/api/stuff', (req, res, next) => {
 ### Questionnaire résumant la première partie 
 
 https://openclassrooms.com/fr/courses/6390246-passez-au-full-stack-avec-node-js-express-et-mongodb/exercises/3690
+
+
+### Création de la base de donnée Mongodb et installation de Mongoose
+
+`npm i mongoose`
+on l'importe dans app.js `const mongoose = require('mongoose')`
+
+on crée la bdd on récupère les identifiants que l'on rentre en premier paramètre de la méthode connect de mongoose 
+
+on place cette méthode juste en dessous de la déclaration de app 
+
+## Schéma de données
+
+on crée un dossier models
+on crée un fichier objet qui déterminera le schéma de notre objet
+on exporte le modèle grâce a mongoose.model('Nom du fichier', Nom du schéma)
+
+## Enregistrement du nouvel objet dans la BDD
+
+On importe notre modèle dans app.js 
+`const Thing = require('./models/thing');`
+On implémente la logique de la méthode post
+```
+app.post('/api/stuff', (req, res, next) => {
+  delete req.body._id;
+  const thing = new Thing({
+    ...req.body
+  });
+  thing.save()
+    .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
+    .catch(error => res.status(400).json({ error }));
+});
+```
