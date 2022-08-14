@@ -204,3 +204,31 @@ app.post('/api/stuff', (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 });
 ```
+## Récupération d'un objet grâce à son id passé dans l'url
+```
+app.get('/api/stuff/:id', (req, res, next) => {
+  Thing.findOne({ _id: req.params.id })
+    .then(thing => res.status(200).json(thing))
+    .catch(error => res.status(404).json({ error }));
+});
+```
+    Les méthodes de votre modèle Thing permettent d'interagir avec la base de données :
+
+        save()  – enregistre un Thing ;
+
+        find()  – retourne tous les Things ;
+
+        findOne()  – retourne un seul Thing basé sur la fonction de comparaison qu'on lui passe (souvent pour récupérer un Thing par son identifiant unique).
+
+    La méthode  app.get()  permet de réagir uniquement aux requêtes de type GET.
+
+## Route Put modifier un objet
+
+```
+app.put('/api/stuff/:id', (req, res, next) => {
+  Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+    .catch(error => res.status(400).json({ error }));
+});
+```
+L'utilisation du mot-clé new avec un modèle Mongoose crée par défaut un champ_id . Utiliser ce mot-clé générerait une erreur, car nous tenterions de modifier un champ immuable dans un document de la base de données. Par conséquent, nous devons utiliser le paramètre id de la requête pour configurer notre Thing avec le même _id qu'avant.
