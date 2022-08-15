@@ -237,4 +237,4 @@ L'utilisation du mot-clé new avec un modèle Mongoose crée par défaut un cham
 On va déplacer la logique de routage dans le dossier routes et la logique métier dans le dossier controllers 
 ## Création du router express
 On crée routes/stuff.js qui gérera les endpoints à partir de l'url 'api/stuff'
-on exporte le router, on l'importe dans app.js, on l'instancie comme stffRoutes et on l'utilise avec `app.use('/api/stuff', stuffRoutes)`
+on exporte le router, on l'importe dans app.js, on l'instancie comme stuffRoutes et on l'utilise avec `app.use('/api/stuff', stuffRoutes)`
