@@ -232,3 +232,9 @@ app.put('/api/stuff/:id', (req, res, next) => {
 });
 ```
 L'utilisation du mot-clé new avec un modèle Mongoose crée par défaut un champ_id . Utiliser ce mot-clé générerait une erreur, car nous tenterions de modifier un champ immuable dans un document de la base de données. Par conséquent, nous devons utiliser le paramètre id de la requête pour configurer notre Thing avec le même _id qu'avant.
+
+# Refacto du code pour la lisibilité et la maintenabilité 
+On va déplacer la logique de routage dans le dossier routes et la logique métier dans le dossier controllers 
+## Création du router express
+On crée routes/stuff.js qui gérera les endpoints à partir de l'url 'api/stuff'
+on exporte le router, on l'importe dans app.js, on l'instancie comme stffRoutes et on l'utilise avec `app.use('/api/stuff', stuffRoutes)`
