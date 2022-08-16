@@ -238,3 +238,32 @@ On va déplacer la logique de routage dans le dossier routes et la logique méti
 ## Création du router express
 On crée routes/stuff.js qui gérera les endpoints à partir de l'url 'api/stuff'
 on exporte le router, on l'importe dans app.js, on l'instancie comme stuffRoutes et on l'utilise avec `app.use('/api/stuff', stuffRoutes)`
+En résumé
+
+    La méthodeexpress.Router()  vous permet de créer des routeurs séparés pour chaque route principale de votre application – vous y enregistrez ensuite les routes individuelles.
+
+    Un fichier de contrôleur exporte des méthodes qui sont ensuite attribuées aux routes pour améliorer la maintenabilité de votre application.
+
+# Authentification
+On installe ce package `npm install mongoose-unique-validator` pour qu'on ne puisse pas s'inscrire 2 fois avec le même email
+On crée le modèle User avec mongoose dans models/User
+En résumé
+
+    bcrypt  est un package de cryptage que vous pouvez installer avec  npm  .
+
+    mongoose-unique-validator  améliore les messages d'erreur lors de l'enregistrement de données uniques.
+
+## Création du router et du controller pour user
+
+Comme pour les Thing on crée un router qui servira les routes /auth... dans routes/user.js et un controller qui gérera les fonctions signup et login dans controllers/user.js
+
+## hashage du mdp avec bcrypt lors de l'inscription d'un nouvel utilisateur
+
+on installe le package bcrypt qui va nous permettre de hasher le map utilisateur `npm i bcrypt`
+on importe le modèle User dans le controller
+on crée la méthode signup en commençant par hasher le mdp puis on enregistre le nouvel utilisateur dans la bdd avec .save()
+
+## Login avec vérif du mdp avec brcrypt et envoi du token si ok
+
+On implémente la logique de login en vérifiant si l'utilisateur existe, on renvoie un msg général si il n'existe pas car c'est déjà une fuite de donnée que de savoir si un utilisateur est inscrit ou pas à un site !!
+Si l'utilisateur existe on compare le hash du mdp avec celui enregistré en bdd grâce à bcrypt.compare , si c'est ok on renvoi l'_id de l'utilisateur et un token au front-end

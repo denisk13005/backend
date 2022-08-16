@@ -1,9 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 // const Product = require('./models/Product') //TP fin partie 3
 const app = express();
-
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // autorise l'accès a l'api à partir de n'importe quelle adresse !
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  next(); // on n'oublie pas le next 
+});
 const stuffRoutes = require('./routes/stuff')
+const userRoutes = require('./routes/user')
 
 mongoose.connect(process.env.MONGO_URI || `mongodb+srv://denisk13005:Lucas*2808@cluster0.upft3lg.mongodb.net/?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
@@ -13,14 +20,11 @@ mongoose.connect(process.env.MONGO_URI || `mongodb+srv://denisk13005:Lucas*2808@
 
   
 app.use(express.json()) // équivalent à bodyParser converti le body en json
+app.use(cors())
 //résolution des prblèmes CORS on ajoute des entêtes de config et de permissions 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*'); // autorise l'accès a l'api à partir de n'importe quelle adresse !
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  next(); // on n'oublie pas le next 
-});
 
+
+app.use('/api/auth', userRoutes)
 app.use('/api/stuff', stuffRoutes) // on fait appel au router 
 
 // *****************************************************************************TP fin partie 2
