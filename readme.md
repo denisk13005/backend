@@ -267,3 +267,25 @@ on crée la méthode signup en commençant par hasher le mdp puis on enregistre 
 
 On implémente la logique de login en vérifiant si l'utilisateur existe, on renvoie un msg général si il n'existe pas car c'est déjà une fuite de donnée que de savoir si un utilisateur est inscrit ou pas à un site !!
 Si l'utilisateur existe on compare le hash du mdp avec celui enregistré en bdd grâce à bcrypt.compare , si c'est ok on renvoi l'_id de l'utilisateur et un token au front-end
+
+## Envoie du token d'authentification avec jwt
+
+On installe jwt `npm install jsonwebtoken`, on l'importe dans controllers/user.js et on génère le token si les identifiants sont exacts
+En résumé
+
+    Les JSON web tokens sont des tokens chiffrés qui peuvent être utilisés pour l'autorisation.
+
+    La méthode sign() du package jsonwebtoken utilise une clé secrète pour chiffrer un token qui peut contenir un payload personnalisé et avoir une validité limitée.
+
+## Middlaware d'authentification 
+
+On crée un fichier middlewares/auth.js 
+On crée une fonction qui va récupérer le token dans le header de la requête, le comparer grâce à .verify() et à la clé secrette 'RANDOM_TOKEN_SECRET', si le token est bon on extrait userId du token décodé et on l'ajoute à la requête avec req.auth.
+Ensuite on ajoute ce middleware à toutes les routes que l'on veut protéger dans notre routeur routes/stuff avant le controller correspondant à la requête
+En résumé
+
+    La méthode verify() du package jsonwebtoken permet de vérifier la validité d'un token (sur une requête entrante, par exemple).
+
+    Ajoutez bien votre middleware d'authentification dans le bon ordre sur les bonnes routes.
+
+    Attention aux failles de sécurité !

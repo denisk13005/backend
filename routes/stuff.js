@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const stuffCtrl = require('../controllers/stuff');// on appelle le controller qui va gérer la logique métier grâce à des fontions que l'on passera en callback dans la méthode voulue de notre router 
+const auth = require('../middleware/auth');
 
-router.get('/', stuffCtrl.getAllStuff);
-router.post('/', stuffCtrl.createThing);
-router.get('/:id', stuffCtrl.getOneThing);
-router.put('/:id', stuffCtrl.modifyThing);
-router.delete('/:id', stuffCtrl.deleteThing);
+const stuffCtrl = require('../controllers/stuff');
+
+router.get('/', auth, stuffCtrl.getAllStuff);
+router.post('/', auth, stuffCtrl.createThing);
+router.get('/:id', auth, stuffCtrl.getOneThing);
+router.put('/:id', auth, stuffCtrl.modifyThing);
+router.delete('/:id', auth, stuffCtrl.deleteThing);
 
 module.exports = router;
