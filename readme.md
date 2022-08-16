@@ -289,3 +289,43 @@ En résumé
     Ajoutez bien votre middleware d'authentification dans le bon ordre sur les bonnes routes.
 
     Attention aux failles de sécurité !
+
+# Accepter des fichiers entrant avec multer 
+
+On va configurer un middleware qui nous permettra de stocker des fichiers entrants par exemple la photo d'un objet à vendre qu'un utilisateur chargera à partir de son dd
+
+`npm i multer`
+On crée un dossier images à la racine du backend pour enregistrer les images 
+On crée le middlaware multer-config.js afin de définir une configuration pour multer 
+Dans ce middleware :
+
+    Nous créons une constante storage , à passer à multer comme configuration, qui contient la logique nécessaire pour indiquer à multer où enregistrer les fichiers entrants :
+
+        la fonction destination indique à multer d'enregistrer les fichiers dans le dossier images ;
+
+        la fonction filename indique à multer d'utiliser le nom d'origine, de remplacer les espaces par des underscores et d'ajouter un timestamp Date.now() comme nom de fichier. Elle utilise ensuite la constante dictionnaire de type MIME pour résoudre l'extension de fichier appropriée.
+
+    Nous exportons ensuite l'élément multer entièrement configuré, lui passons notre constante storage et lui indiquons que nous gérerons uniquement les téléchargements de fichiers image.
+En résumé
+
+    multer est un package de gestion de fichiers.
+
+    Sa méthode diskStorage()  configure le chemin et le nom de fichier pour les fichiers entrants.
+
+    Sa méthode single()  crée un middleware qui capture les fichiers d'un certain type (passé en argument), et les enregistre au système de fichiers du serveur à l'aide du storage configuré.
+
+## Modification de la route post pout accepter les fichier entrants
+Pour que notre middleware de téléchargement de fichiers fonctionne sur nos routes, nous devrons modifier ces dernières, car le format d'une requête contenant un fichier du front-end est différent
+Tout d'abord, ajoutons notre middleware multer à notre route POST dans notre routeur stuff `router.post('/', auth, multer, stuffCtrl.createThing);`
+Pour gérer correctement la nouvelle requête entrante, nous devons mettre à jour notre contrôleur createThing
+Que fait le code  ?
+
+    Pour ajouter un fichier à la requête, le front-end doit envoyer les données de la requête sous la forme form-data et non sous forme de JSON. Le corps de la requête contient une chaîne thing, qui est simplement un objetThing converti en chaîne. Nous devons donc l'analyser à l'aide de JSON.parse() pour obtenir un objet utilisable.
+
+    Nous supprimons le champ_userId de la requête envoyée par le client car nous ne devons pas lui faire confiance (rien ne l’empêcherait de nous passer le userId d’une autre personne). Nous le remplaçons en base de données par le _userId extrait du token par le middleware d’authentification.
+
+    Nous devons également résoudre l'URL complète de notre image, car req.file.filename ne contient que le segment filename. Nous utilisons req.protocol pour obtenir le premier segment (dans notre cas 'http'). Nous ajoutons '://', puis utilisons req.get('host') pour résoudre l'hôte du serveur (ici, 'localhost:3000'). Nous ajoutons finalement '/images/' et le nom de fichier pour compléter notre URL.
+
+Ensuite on rajoute une route dans app.js pour que notre requête à localhost://3000/images puisse avoir une réponse (jusqu'à présent nous n'avon de réponse que sur les routes /api/stuff et /api/auth)!!
+
+O

@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
+const path = require('path');
 // const Product = require('./models/Product') //TP fin partie 3
 const app = express();
 app.use((req, res, next) => {
@@ -26,6 +27,7 @@ app.use(cors())
 
 app.use('/api/auth', userRoutes)
 app.use('/api/stuff', stuffRoutes) // on fait appel au router 
+app.use('/images', express.static(path.join(__dirname,'images')))
 
 // *****************************************************************************TP fin partie 2
 // app.post('/api/products',(req,res,next)=> {
