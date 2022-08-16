@@ -328,4 +328,38 @@ Que fait le code  ?
 
 Ensuite on rajoute une route dans app.js pour que notre requête à localhost://3000/images puisse avoir une réponse (jusqu'à présent nous n'avon de réponse que sur les routes /api/stuff et /api/auth)!!
 
-O
+## Modification de la route PUT 
+Tout d'abord, ajoutons multer comme middleware à notre route PUT :
+`router.put('/:id', auth, multer, stuffCtrl.modifyThing);`
+À présent, nous devons modifier notre fonction modifyThing() pour voir si nous avons reçu ou non un nouveau fichier et répondre en conséquence :
+Dans cette version modifiée de la fonction, on crée un objet thingObject qui regarde si req.file existe ou non. S'il existe, on traite la nouvelle image ; s'il n'existe pas, on traite simplement l'objet entrant. On crée ensuite une instance Thing à partir de thingObject, puis on effectue la modification. Nous avons auparavant, comme pour la route POST, supprimé le champ _userId envoyé par le client afin d’éviter de changer son propriétaire et nous avons vérifié que le requérant est bien le propriétaire de l’objet.
+En résumé
+
+    JSON.parse() transforme un objet stringifié en Object JavaScript exploitable.
+
+    Vous aurez besoin dereq.protocol  et de req.get('host'), connectés par  '://'  et suivis de req.file.filename, pour reconstruire l'URL complète du fichier enregistré.
+
+    Configurez votre serveur pour renvoyer des fichiers statiques pour une route donnée avec  express.static()  et  path.join().
+
+## Modification de la route Delete pour supprimer du disque les images téléchargées en mm tp que la suppression de l'objet
+
+Dans notre contrôleur stuff, il nous faut une nouvelle importation. Il s'agit du package fs de Node :
+`const fs = require('fs');`
+fs  signifie « file system » (soit « système de fichiers », en français). Il nous donne accès aux fonctions qui nous permettent de modifier le système de fichiers, y compris aux fonctions permettant de supprimer les fichiers.
+
+Dans cette fonction :
+
+    Nous utilisons l'ID que nous recevons comme paramètre pour accéder au Thing correspondant dans la base de données.
+
+    Nous vérifions si l’utilisateur qui a fait la requête de suppression est bien celui qui a créé le Thing.
+
+    Nous utilisons le fait de savoir que notre URL d'image contient un segment /images/ pour séparer le nom de fichier.
+
+    Nous utilisons ensuite la fonction unlink du package fs pour supprimer ce fichier, en lui passant le fichier à supprimer et le callback à exécuter une fois ce fichier supprimé.
+
+    Dans le callback, nous implémentons la logique d'origine en supprimant le Thing de la base de données.
+En résumé
+
+    Le package fs expose des méthodes pour interagir avec le système de fichiers du serveur.
+
+    La méthode unlink() du package  fs  vous permet de supprimer un fichier du système de fichiers.
