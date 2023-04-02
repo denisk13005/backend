@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
 const path = require('path');
+require('dotenv').config()
 // const Product = require('./models/Product') //TP fin partie 3
 const app = express();
 app.use((req, res, next) => {
@@ -12,12 +13,13 @@ app.use((req, res, next) => {
 });
 const stuffRoutes = require('./routes/stuff')
 const userRoutes = require('./routes/user')
+const orderRoutes = require('./routes/order')
 
-mongoose.connect(process.env.MONGO_URI || `mongodb+srv://denisk13005:Lucas*2808@cluster0.upft3lg.mongodb.net/?retryWrites=true&w=majority`,
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+// mongoose.connect(process.env.MONGO_URI || `mongodb+srv://denisk13005:${process.env.MONGO_PASSWORD}@cluster0.upft3lg.mongodb.net/?retryWrites=true&w=majority`,
+//   { useNewUrlParser: true,
+//     useUnifiedTopology: true })
+//   .then(() => console.log('Connexion à MongoDB réussie !'))
+//   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
   
 app.use(express.json()) // équivalent à bodyParser converti le body en json
@@ -28,6 +30,7 @@ app.use(cors())
 app.use('/api/auth', userRoutes)
 app.use('/api/stuff', stuffRoutes) // on fait appel au router 
 app.use('/images', express.static(path.join(__dirname,'images')))
+app.use('/order', orderRoutes)
 
 // *****************************************************************************TP fin partie 2
 // app.post('/api/products',(req,res,next)=> {
